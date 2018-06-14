@@ -28,10 +28,13 @@ public:
 	void run(bool(*msg)(), void(*callback)(FR_WIN_CMD* HWND));	//a function pointer to control the message loop
 																//a callback fuction with a FR_WIN_CMD class handle
 																//to do all rendering stuff
+																//for dynamic showing
+	void show();												//for stastic showing
 	void putpixel(int x, int y, int i);			//put a pixel in the position (x,y) with colour i
 	bool out(int x, int y);						//judging if (x,y) is out of the window
 	int size(int type);							//return the size of the window
 	void clear();								//clear the screen
+									
 private:
 	char **data;	//the window
 	int height;
@@ -56,7 +59,7 @@ FR_WIN_CMD::FR_WIN_CMD(int a, int b, int fps = 30) {
 
 }
 
-void FR_WIN_CMD::run(bool(*msg)(), void(*callback)(FR_WIN_CMD* HWND)) {
+void FR_WIN_CMD::run(bool(*msg)(), void(*callback)(FR_WIN_CMD* HWND)) {  
 	clock_t vst, ved, start, end;
 	double t;
 	while (!msg()) {
@@ -67,7 +70,7 @@ void FR_WIN_CMD::run(bool(*msg)(), void(*callback)(FR_WIN_CMD* HWND)) {
 		callback(this);
 		for (int i = 0; i<height; i++)
 			puts(data[i]);
-
+		//system("pause");
 		printf("FPS:%lf", t);
 		while (1) {
 			end = clock();
@@ -77,6 +80,12 @@ void FR_WIN_CMD::run(bool(*msg)(), void(*callback)(FR_WIN_CMD* HWND)) {
 		t = 1.0 / (0.001*(ved - vst));
 
 	}
+}
+
+void FR_WIN_CMD::show(){
+	system("cls");
+	for (int i = 0; i<height; i++)
+		puts(data[i]);
 }
 
 void FR_WIN_CMD::putpixel(int x, int y, int i) {
