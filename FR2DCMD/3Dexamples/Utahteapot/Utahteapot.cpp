@@ -21,7 +21,7 @@ FILE *fin=fopen("utahteapot.stl","rb");
 void thrDinit(){	//read the utah teapot model 
 	
 	char waste[85];
-	int n[10],p=0;
+	int n[10],p=0,colour=1;
 	float t[5],k=1.8,s=0.1;	//s:rate
 	fseek(fin, SEEK_SET, 0);
 	
@@ -35,19 +35,20 @@ void thrDinit(){	//read the utah teapot model
 	printf("loading:");
 	for(int i=0;i<n[0];i++){
 		fread(t, 4, 3, fin);	//waste
-		
+		colour=8-(7*i/n[0]+1);
 		fread(t, 4, 3, fin);	//the 1st vertex
-		v_init(pot[p],s*t[0],s*t[1],s*t[2]+k,7);
+		
+		v_init(pot[p],s*t[0],s*t[1],s*t[2]+k,colour);
 		B.add_vertex(&pot[p]);	//apply it into the vertex buffer
 		p++;
 		
 		fread(t, 4, 3, fin);	//the 2nd vertex
-		v_init(pot[p],s*t[0],s*t[1],s*t[2]+k,7);
+		v_init(pot[p],s*t[0],s*t[1],s*t[2]+k,colour);
 		B.add_vertex(&pot[p]);
 		p++;
 		
 		fread(t, 4, 3, fin);	//the 3rd vertex
-		v_init(pot[p],s*t[0],s*t[1],s*t[2]+k,7);
+		v_init(pot[p],s*t[0],s*t[1],s*t[2]+k,colour);
 		B.add_vertex(&pot[p]);
 		p++;
 		
