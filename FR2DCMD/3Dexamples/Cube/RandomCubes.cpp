@@ -75,16 +75,16 @@ void kdown(){
 void kleft(){
 	for(int i=0;i<cube_num;i++){
 		for(int j=0;j<8;j++)
-			c[i].v[j].x-=camera_speed;
-		c[i].x-=camera_speed;
+			c[i].v[j].x+=camera_speed;
+		c[i].x+=camera_speed;
 	}
 }
 
 void kright(){
 	for(int i=0;i<cube_num;i++){
 		for(int j=0;j<8;j++)
-			c[i].v[j].x+=camera_speed;
-		c[i].x+=camera_speed;
+			c[i].v[j].x-=camera_speed;
+		c[i].x-=camera_speed;
 	}
 }
 
