@@ -14,7 +14,7 @@ FR3D_CMD fr3d(&fr2d,0,0,0,150);
 buffer B(&fr3d);
 
 ////////////////////
-vertex cube[7];
+vertex cube[8];
 
 void thrDinit(){
 	double k=30;

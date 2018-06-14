@@ -6,8 +6,8 @@
 #include <conio.h>
 #include<memory.h>
 #include <windows.h>
-#include<time.h>
-#include<math.h>
+#include<ctime>
+#include<cmath>
 
 
 //////the colour set defination

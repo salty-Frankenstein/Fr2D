@@ -20,6 +20,9 @@ namespace FR3DCMD {
 		v1.z = z;
 		v1.colour = colour;
 	}
+
+	enum axis {x,y,z};
+
 	class FR3D_CMD {
 	public:
 		FR3D_CMD(FR2DCMD::FR2D_CMD *H, double x = 0, double y = 0, double z = 0, double dist = 100) {
@@ -101,6 +104,48 @@ namespace FR3DCMD {
 			ori.z = ans.ele(0, 2);
 		}
 
+		void rotate_cube(double angle, axis t, vertex v[], double tx,double ty,double tz) {
+			
+			//for (int i = 0; i < 8; i++)
+			switch (t) {
+
+			case x: {
+				for (int i = 0; i < 8; i++) {
+					v[i].y -= ty;
+					v[i].z -= tz;
+					x_rotate(v[i], angle);
+					v[i].y += ty;
+					v[i].z += tz;
+				}
+					
+				break;
+			}
+
+			case y: {
+				for (int i = 0; i < 8; i++) {
+					v[i].z -= tz;
+					v[i].x -= tx;
+					y_rotate(v[i], angle);
+					v[i].z += tz;
+					v[i].x += tx;
+				}
+				break;
+			}
+
+			case z: {
+				for (int i = 0; i < 8; i++) {
+					v[i].y -= ty;
+					v[i].x -= tx;
+					z_rotate(v[i], angle);
+					v[i].y += ty;
+					v[i].x += tx;
+				}
+				break;
+			}
+
+			}
+		}
+
 	private:
 		FR2DCMD::FR2D_CMD * F2DH;
 		double ox, oy, oz;
@@ -143,6 +188,46 @@ namespace FR3DCMD {
 			index.push_back(j);
 			index.push_back(k);
 			index_ed += 3;
+		}
+
+		void cube(vertex cube[], double x, double y, double z, double size) {	//return a vertex buffer of a cube
+			v_init(cube[0], 1 * size, 1 * size, 1 * size, 1);
+			v_init(cube[1], 1 * size, 1 * size, -1 * size, 2);
+			v_init(cube[2], -1 * size, 1 * size, 1 * size, 3);
+			v_init(cube[3], -1 * size, 1 * size, -1 * size, 4);
+			v_init(cube[4], 1 * size, -1 * size, 1 * size, 5);
+			v_init(cube[5], 1 * size, -1 * size, -1 * size, 6);
+			v_init(cube[6], -1 * size, -1 * size, 1 * size, 7);
+			v_init(cube[7], -1 * size, -1 * size, -1 * size, 0);	//cube vertex initialization
+
+			this->add_index(num + 0, num + 2, num + 3);
+			this->add_index(num + 0, num + 1, num + 3);
+
+			this->add_index(num + 0, num + 4, num + 1);
+			this->add_index(num + 4, num + 1, num + 5);
+
+			this->add_index(num + 0, num + 2, num + 6);
+			this->add_index(num + 0, num + 4, num + 6);
+
+			this->add_index(num + 1, num + 7, num + 5);
+			this->add_index(num + 1, num + 7, num + 3);
+
+			this->add_index(num + 7, num + 2, num + 3);
+			this->add_index(num + 7, num + 2, num + 6);
+
+			this->add_index(num + 7, num + 4, num + 5);
+			this->add_index(num + 7, num + 4, num + 6);				//build the vertex buffer
+
+
+			for (int i = 0; i <= 7; i++)
+				this->add_vertex(&cube[i]);			//apply the vertex into the buffer
+
+			for (int i = 0; i <= 7; i++) {
+				cube[i].x += x;
+				cube[i].y += y;
+				cube[i].z += z;
+			}
+
 		}
 
 	private:
