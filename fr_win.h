@@ -4,6 +4,7 @@
 #ifndef FR_WINDOWS_INIT
 #define FR_WINDOWS_INIT
 
+#define WINPARAMETERS HINSTANCE hinstance, HINSTANCE prevInstance, PSTR cmdLine, int showCmd
 //static 
 bool isPushEsc = false;//是否按下Esc键
 
@@ -15,7 +16,7 @@ public:
 	HWND GetHandle();//返回窗口句柄
 	bool Create(int &width, int &height);//创建窗口
 	void Rename(LPCWSTR tname);
-	void Run();//处理消息循环
+	void Run(bool(*show)());//处理消息循环
 	LRESULT CALLBACK MessageHandler(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam);//消息处理
 private:
 	HWND hwnd;
@@ -102,7 +103,7 @@ bool FR_WND::Create(int &width, int &height)
 
 
 
-void FR_WND::Run() {
+void FR_WND::Run(bool (*show)()) {
 	MSG msg;
 	ZeroMemory(&msg, sizeof(MSG));
 	bool isRuning = true;//控制是否退出消息循环
@@ -123,6 +124,7 @@ void FR_WND::Run() {
 			isRuning = !isPushEsc;
 
 			//渲染等处理可以放在这儿
+			show();
 		}
 
 	}
