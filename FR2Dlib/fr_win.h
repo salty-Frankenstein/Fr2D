@@ -7,6 +7,7 @@
 #define WINPARAMETERS HINSTANCE hinstance, HINSTANCE prevInstance, PSTR cmdLine, int showCmd
 //static 
 bool isPushEsc = false;//ÊÇ·ñ°´ÏÂEsc¼ü
+bool getkey[256] = {0};
 
 class FR_WND {
 public:
@@ -18,6 +19,7 @@ public:
 	void Rename(LPCWSTR tname);
 	void Run(bool(*show)());//´¦ÀíÏûÏ¢Ñ­»·
 	LRESULT CALLBACK MessageHandler(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam);//ÏûÏ¢´¦Àí
+	void keyboard(WPARAM wparam){}
 private:
 	HWND hwnd;
 	HINSTANCE hInstance;
@@ -37,32 +39,35 @@ void FR_WND::Rename(LPCWSTR tname) {
 	name = tname;
 }
 
-HWND FR_WND::GetHandle()
-{
+HWND FR_WND::GetHandle(){
 	return hwnd;
 }
 
 
-LRESULT CALLBACK FR_WND::MessageHandler(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam)
-{
-	switch (message)
-	{
+LRESULT CALLBACK FR_WND::MessageHandler(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam){
+	//keyboard(wparam);
+	switch (message){
 		//¼ì²â°´¼üÏûÏ¢
 	case WM_KEYDOWN:
+		getkey[wparam] = true;
 		if (wparam == VK_ESCAPE)//ÓÃ»§°´ÏÂÍË³ö¼ü
 			isPushEsc = true;
-		return 0;
+		break;
+	case WM_KEYUP:
+		getkey[wparam] = 0;
+		break;
 
 		//ÆäËûÏûÏ¢·¢ËÍwindowsÈ±Ê¡´¦Àí
 	default:
 		return DefWindowProc(hwnd, message, wparam, lparam);
 	}
+	
 }
 
 //´°¿Ú¹ı³Ì
-LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)//´°¿Ú¹ı³Ì  
+LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam)//´°¿Ú¹ı³Ì  
 {
-	switch (msg)
+	switch (message)
 	{
 	case WM_DESTROY://Ïú»Ù  
 		PostQuitMessage(0); //ÖÕÖ¹ÇëÇó  
@@ -70,7 +75,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)//´°¿
 	}
 	//µ÷ÓÃÈ±Ê¡µÄ´°¿Ú¹ı³ÌÀ´ÎªÓ¦ÓÃ³ÌĞòÃ»ÓĞ´¦ÀíµÄÈÎºÎ´°¿ÚÏûÏ¢Ìá¹©È±Ê¡µÄ´¦Àí¡£    
 	//¸Ãº¯ÊıÈ·±£Ã¿Ò»¸öÏûÏ¢µÃµ½´¦Àí    
-	return ::DefWindowProc(hwnd, msg, wParam, lParam);
+	return applicationHandle->MessageHandler(hwnd, message, wparam, lparam);
 }
 
 //³õÊ¼»¯´°¿ÚĞÅÏ¢
@@ -110,11 +115,14 @@ void FR_WND::Run(bool (*show)()) {
 	while (isRuning)
 	{
 		//´¦ÀíwindowsÏûÏ¢
+		
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
+		
+
 		if (msg.message == WM_QUIT)
 		{
 			isRuning = false;
@@ -122,7 +130,7 @@ void FR_WND::Run(bool (*show)()) {
 		else//°´ÏÂesc¼üÒ²ÍË³ö
 		{
 			isRuning = !isPushEsc;
-
+			
 			//äÖÈ¾µÈ´¦Àí¿ÉÒÔ·ÅÔÚÕâ¶ù
 			show();
 		}
