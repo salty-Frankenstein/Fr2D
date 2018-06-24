@@ -54,7 +54,7 @@ LRESULT CALLBACK FR_WND::MessageHandler(HWND hwnd, UINT message, WPARAM wparam, 
 			isPushEsc = true;
 		break;
 	case WM_KEYUP:
-		getkey[wparam] = 0;
+		getkey[wparam] = false;
 		break;
 
 		//其他消息发送windows缺省处理
