@@ -43,8 +43,13 @@ Fr2DBrush Fr2D::GetBrush() {
 	return brush;
 }
 
-//
+Fr2DFactory Fr2D::GetFactory() {
+	return d2dFactory;
+}
+//end of fr2d class
 
+
+//the loading of pictures
 bool FrPic::Create(LPCWSTR filename, Fr2DHDL target) {
 	picname = filename;
 	rendertarget = target;
@@ -122,3 +127,54 @@ bool FrPic::Create(LPCWSTR filename, Fr2DHDL target) {
 FrPicHDL FrPic::GetHandle() {
 	return pBitmap;
 }
+//end of picture loading
+
+//the text writing
+LPCWSTR stringToLPCWSTR(std::string orig)
+{
+	size_t origsize = orig.length() + 1;
+	const size_t newsize = 100;
+	size_t convertedChars = 0;
+	wchar_t *wcstring = (wchar_t *)malloc(sizeof(wchar_t)*(orig.length() - 1));
+	mbstowcs_s(&convertedChars, wcstring, origsize, orig.c_str(), _TRUNCATE);
+
+	return wcstring;
+}
+
+bool FrText::Create(Fr2D *target) {
+	fr2d = target;
+	rendertarget = fr2d->GetHandle();
+	brush = fr2d->GetBrush();
+	pDWriteFactory = NULL;
+	pTextFormat = NULL;
+
+	DWriteCreateFactory(
+		DWRITE_FACTORY_TYPE_SHARED,
+		__uuidof(IDWriteFactory),
+		reinterpret_cast<IUnknown**>(&pDWriteFactory));
+
+	hr = pDWriteFactory->CreateTextFormat(
+		L"Arial",
+		NULL,
+		DWRITE_FONT_WEIGHT_NORMAL,
+		DWRITE_FONT_STYLE_NORMAL,
+		DWRITE_FONT_STRETCH_NORMAL,
+		20.0f * 96.0f / 72.0f,
+		L"en-US",
+		&pTextFormat
+	);
+
+	layoutRect = D2D1::RectF(0.f, 0.f, 200.f, 200.f);
+	return true;
+}
+
+void FrText::Write(std::string s) {
+	rendertarget->DrawText(
+		stringToLPCWSTR(s),
+		s.length(),
+		pTextFormat,
+		layoutRect,
+		brush
+	);
+}
+//end of text writing
