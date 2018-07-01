@@ -2,9 +2,15 @@
 
 #ifndef FR_FR2D_INIT
 #define FR_FR2D_INIT
-
+#include <tchar.h>
 #include<d2d1.h>
 #include<windows.h>  
+#include<wincodec.h>
+#include<Dwrite.h>
+#include<string>
+
+//the Fr2D class
+typedef ID2D1Factory * Fr2DFactory;
 typedef ID2D1HwndRenderTarget* Fr2DHDL;
 typedef ID2D1SolidColorBrush* Fr2DBrush;
 
@@ -16,57 +22,55 @@ public:
 
 	Fr2DHDL GetHandle();
 	Fr2DBrush GetBrush();
-
+	Fr2DFactory GetFactory();
 private:
-	ID2D1Factory * d2dFactory;
+	Fr2DFactory d2dFactory;
 	Fr2DHDL hdl;
 	Fr2DBrush brush;
 	HWND hwnd;
 };
+//end of fr2d init
 
-bool Fr2D::Create(HWND h) {
-	hwnd = h;
+//loading picture
+typedef ID2D1Bitmap* FrPicHDL;
+
+class FrPic {
+public:
+	FrPic() {}
+	~FrPic() {}
+	bool Create(LPCWSTR filename, Fr2DHDL target);
+	FrPicHDL GetHandle();
+private:
+	FrPicHDL pBitmap;
+	Fr2DHDL rendertarget;
 	HRESULT hr;
-	hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &d2dFactory);
-	if (FAILED(hr)) {
-		MessageBox(hwnd, _T("Create D2D factory failed!"), _T("Error"), 0);
-		return false;
-	}
+	IWICImagingFactory *pIWICFactory;
+	IWICBitmapDecoder *pDecoder;
+	IWICBitmapFrameDecode *pSource;
+	IWICStream *pStream;
+	IWICFormatConverter *pConverter;
+	IWICBitmapScaler *pScaler;
+	LPCWSTR picname;
+};
+//end of loading picture
 
-	RECT rc;
-	GetClientRect(hwnd, &rc);
-	hr = d2dFactory->CreateHwndRenderTarget(
-		D2D1::RenderTargetProperties(),
-		D2D1::HwndRenderTargetProperties(
-			hwnd,
-			D2D1::SizeU(rc.right - rc.left, rc.bottom - rc.top)
-		),
-		&hdl
-	);
-	if (FAILED(hr)) {
-		MessageBox(hwnd, _T("Create render target failed!"), _T("Error"), 0);
-		return false;
-	}
+//write texts
+typedef IDWriteFactory* Fr2DText;
+LPCWSTR stringToLPCWSTR(std::string orig);
 
-	// Create a brush
-	hr = hdl->CreateSolidColorBrush(
-		D2D1::ColorF(D2D1::ColorF::Red),
-		&brush
-	);
-	if (FAILED(hr)) {
-		MessageBox(hwnd, _T("Create brush failed!"), _T("Error"), 0);
-		return false;
-	}
+class FrText {
+public:
+	bool Create(Fr2D *target);
+	void Write(std::string s);
 
-	return true;
-}
-
-Fr2DHDL Fr2D::GetHandle() {
-	return hdl;
-}
-
-Fr2DBrush Fr2D::GetBrush() {
-	return brush;
-}
+private:
+	Fr2D * fr2d;
+	Fr2DHDL rendertarget;
+	Fr2DBrush brush;
+	HRESULT hr;
+	IDWriteFactory* pDWriteFactory;
+	IDWriteTextFormat* pTextFormat;
+	D2D1_RECT_F layoutRect;
+};
 
 #endif
