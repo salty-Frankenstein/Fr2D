@@ -1,46 +1,132 @@
-#pragma once
+ï»¿#pragma once
 
-#include<windows.h>  
 #ifndef FR_WINDOWS_INIT
 #define FR_WINDOWS_INIT
 
-#define WINPARAMETERS HINSTANCE hinstance, HINSTANCE prevInstance, PSTR cmdLine, int showCmd
-extern bool getkey[];
+#include<windows.h>
+#include<tchar.h>
 
-class FR_WND {
+#define WINPARAMETERS HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, int nShowCmd
+#define INITPARAMETERS hInstance, nShowCmd
+
+LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+
+class FrWnd{
 public:
-	FR_WND();//¹¹Ôìº¯Êý
-	~FR_WND() {}//Îö¹¹º¯Êý
-public:
-	HWND GetHandle();//·µ»Ø´°¿Ú¾ä±ú
-	bool Create(int &width, int &height);//´´½¨´°¿Ú
-	void Rename(LPCWSTR tname);
-	void Run(bool(*show)());//´¦ÀíÏûÏ¢Ñ­»·
-	LRESULT CALLBACK MessageHandler(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam);//ÏûÏ¢´¦Àí
-	void keyboard(WPARAM wparam){}
+	FrWnd();
+	FrWnd(int _height, int _width, LPCSTR _name);
+	~FrWnd() {}
+
+	HWND GetHandle();
+	bool Create(HINSTANCE instanceHandle, int show);
+	int Run();
+	bool Display();
 private:
 	HWND hwnd;
-	HINSTANCE hInstance;
-	LPCWSTR name;
+	LPCSTR name;
+	int height;
+	int width;
 };
 
-static FR_WND *applicationHandle;
+FrWnd::FrWnd() {
+	height = 800;
+	width = 600;
+	name = _T("Test");
+}
+
+FrWnd::FrWnd(int _height, int _width,LPCSTR _name = _T("Test")) {
+	height = _height;
+	width = _width;
+	name = _name;
+}
 
 
+bool FrWnd::Create(HINSTANCE instanceHandle, int show){
+	WNDCLASS wc;
+	wc.style = CS_HREDRAW | CS_VREDRAW;
+	wc.lpfnWndProc = WndProc;
+	wc.cbClsExtra = 0;
+	wc.cbWndExtra = 0;
+	wc.hInstance = instanceHandle;
+	wc.hIcon = LoadIcon(0, IDI_APPLICATION);
+	wc.hCursor = LoadCursor(0, IDC_ARROW);
+	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+	wc.lpszMenuName = 0;
+	wc.lpszClassName = _T("BasicWndClass");
+
+	if (!RegisterClass(&wc)) {
+		MessageBox(0, _T("RegisterClass FAILED"), 0, 0);
+		return false;
+	}
+
+	hwnd = CreateWindow(
+		_T("BasicWndClass"),
+		name,
+		WS_OVERLAPPEDWINDOW,
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
+		height,
+		width,
+		0,
+		0,
+		instanceHandle,
+		0
+	);
+
+	if (hwnd == 0) {
+		MessageBox(0, _T("CreateWindow FAILED"), 0, 0);
+		return false;
+	}
+
+	ShowWindow(hwnd, show);
+	UpdateWindow(hwnd);
+
+	return true;
+}
+
+int FrWnd::Run(){
+	MSG msg = { 0 };
+	while (msg.message != WM_QUIT) {
+		if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE)) {
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+		else {
+			Display();	//æ­¤å¤„ä¸ºå›žè°ƒå‡½æ•°
+		}
+	}
+	return (int)msg.wParam;
+}
+
+HWND FrWnd::GetHandle() {
+	return hwnd;
+}
 
 #endif
 
 /*
-Sample:
-#include "FR_WND.h"
-int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE prevInstance, PSTR cmdLine, int showCmd) {
-	int width = 800, height = 600;
-	FR_WND *window = new FR_WND;
-	window->Rename(_T("test1"));
-	if (window->Create(width, height))
-	{
-		window->Run();
-	}
-	return 0;
+//Example main function:
+//Displayå’ŒWndProcæš‚æ—¶ä¸ä¸ºå›žè°ƒå‡½æ•°ï¼Œé¡»è‡ªå·±å®šä¹‰
+//ä¼šä¿®æ”¹
+
+bool FrWnd::Display() {
+keyboard();
+DrawRectangle();
+return true;
+}
+
+
+FrWnd *myWnd = new FrWnd(800, 600, "hello");
+int WINAPI WinMain(WINPARAMETERS) {
+if (!myWnd->Create(INITPARAMETERS))
+return 0;
+hwnd = myWnd->GetHandle();
+
+D2DInit();
+WICBmpInit();
+D2DBmpInit();
+
+return myWnd->Run();
 }
 */
