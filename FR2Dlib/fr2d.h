@@ -149,6 +149,7 @@ class Fr2D {	//as a d2d render target
 public:
 	Fr2D(HWND& _hwndptr);
 
+	ID2D1HwndRenderTarget* GetHandle();
 	bool Create();
 	bool CreateBrush(Fr2DBrush &fr2dBrush, D2D1_COLOR_F color);
 	bool CreateBitmap(Fr2DBitmap &fr2dbmp);
@@ -167,6 +168,10 @@ private:
 
 Fr2D::Fr2D(HWND& _hwndptr) {
 	hwndptr = &_hwndptr;
+}
+
+ID2D1HwndRenderTarget* Fr2D::GetHandle() {
+	return hdl;
 }
 
 bool Fr2D::Create() {
@@ -201,7 +206,7 @@ bool Fr2D::CreateBrush(Fr2DBrush &fr2dBrush, FR2DCOLOR color) {
 		color,
 		fr2dBrush.GetBrushPtr()
 	);
-
+	
 	if (FAILED(hr)) {
 		MessageBox(*hwndptr, _T("Create brush failed!"), _T("Error"), 0);
 		return false;
@@ -251,6 +256,8 @@ void Fr2D::DrawRectangle(Fr2DBrush &fr2dbrush, float left, float top, float righ
 		fr2dbrush.GetBrush()
 	);
 }
+
+
 
 void Fr2D::DrawBitmap(Fr2DBitmap &fr2dbmp, float left, float top, float right, float bottom) {
 	hdl->DrawBitmap(
