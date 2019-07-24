@@ -149,10 +149,6 @@ class Fr2D {	//as a d2d render target
 public:
 	Fr2D(HWND& _hwndptr);
 
-<<<<<<< HEAD
-=======
-	ID2D1HwndRenderTarget* GetHandle();
->>>>>>> Fr2D2019
 	bool Create();
 	bool CreateBrush(Fr2DBrush &fr2dBrush, D2D1_COLOR_F color);
 	bool CreateBitmap(Fr2DBitmap &fr2dbmp);
@@ -173,13 +169,6 @@ Fr2D::Fr2D(HWND& _hwndptr) {
 	hwndptr = &_hwndptr;
 }
 
-<<<<<<< HEAD
-=======
-ID2D1HwndRenderTarget* Fr2D::GetHandle() {
-	return hdl;
-}
-
->>>>>>> Fr2D2019
 bool Fr2D::Create() {
 	HRESULT hr;
 	hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &d2dFactory);
@@ -212,11 +201,7 @@ bool Fr2D::CreateBrush(Fr2DBrush &fr2dBrush, FR2DCOLOR color) {
 		color,
 		fr2dBrush.GetBrushPtr()
 	);
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> Fr2D2019
 	if (FAILED(hr)) {
 		MessageBox(*hwndptr, _T("Create brush failed!"), _T("Error"), 0);
 		return false;
@@ -267,11 +252,6 @@ void Fr2D::DrawRectangle(Fr2DBrush &fr2dbrush, float left, float top, float righ
 	);
 }
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> Fr2D2019
 void Fr2D::DrawBitmap(Fr2DBitmap &fr2dbmp, float left, float top, float right, float bottom) {
 	hdl->DrawBitmap(
 		fr2dbmp.GetBitmap(),
