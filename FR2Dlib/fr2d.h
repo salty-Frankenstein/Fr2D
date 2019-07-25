@@ -156,8 +156,11 @@ public:
 	void BeginDraw();
 	bool EndDraw();
 	void Clear(D2D1_COLOR_F color);
+	void DrawLine(Fr2DBrush &fr2dbrush, float left, float top, float right, float bottom, float width);
 	void DrawRectangle(Fr2DBrush &fr2dbrush, float left, float top, float right, float bottom);
+	
 	void DrawBitmap(Fr2DBitmap &fr2dbmp, float left, float top, float right, float bottom);
+	
 private:
 	HWND * hwndptr;
 	ID2D1Factory * d2dFactory;
@@ -242,6 +245,10 @@ bool Fr2D::EndDraw() {
 
 void Fr2D::Clear(FR2DCOLOR color) {	// Clear background color to a color
 	hdl->Clear(color);
+}
+
+void Fr2D::DrawLine(Fr2DBrush &fr2dbrush, float left, float top, float right, float bottom, float width = 1.0) {
+	hdl->DrawLine(D2D1::Point2F(left, top), D2D1::Point2F(right, bottom), fr2dbrush.GetBrush(), width);
 }
 
 void Fr2D::DrawRectangle(Fr2DBrush &fr2dbrush, float left, float top, float right, float bottom) {
