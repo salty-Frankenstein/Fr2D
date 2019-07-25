@@ -1,6 +1,8 @@
 # Fr2D library    
 The encapsulation of WindowsAPI and Direct2D, for getting an easier access to develop a windows game program.    
 
+![miku.png](https://raw.githubusercontent.com/salty-Frankenstein/Fr2D/master/FR2Dlib/examples/miku.png)
+
 # Already done:    
 ## fr_win.h    
 The encapsulation of WindowsAPI, used for simply creating a window for rendering.    
