@@ -12,4 +12,4 @@ All the classes need to be initailized with its own Create() function, and then 
 class Fr2D: Serve as a factory class, encapsulation of the D2Dfactory and a render target.     
 class Fr2DBrush: As the ID2D1SolidColorBrush, create for drawing.     
 class Fr2DBitmap: As the WICBipmap and D2DBitmap, loading bmp pictures and drawing on the form.     
-
+struct FrPoint: the point structure with two float variables.    

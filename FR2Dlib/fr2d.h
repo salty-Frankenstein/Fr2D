@@ -11,6 +11,22 @@
 typedef D2D1_COLOR_F FR2DCOLOR;
 #define _FR2DCOLOR(COLOR) ( D2D1::ColorF(D2D1::ColorF:: COLOR ) )
 
+//////////
+//point structure
+
+struct FrPoint {
+	float x;
+	float y;
+	FrPoint(float _x, float _y);
+};
+
+FrPoint::FrPoint(float _x, float _y) {
+	x = _x;
+	y = _y;
+}
+
+//////////
+
 /*
 class Fr2DBitmap
 Serve as the WICBitmap && D2DBitmap
@@ -149,6 +165,8 @@ class Fr2D {	//as a d2d render target
 public:
 	Fr2D(HWND& _hwndptr);
 
+	ID2D1HwndRenderTarget* GetHandle();		//仅在测试时使用
+	ID2D1Factory * GetFactory();			//仅在测试时使用
 	bool Create();
 	bool CreateBrush(Fr2DBrush &fr2dBrush, D2D1_COLOR_F color);
 	bool CreateBitmap(Fr2DBitmap &fr2dbmp);
@@ -157,8 +175,13 @@ public:
 	bool EndDraw();
 	void Clear(D2D1_COLOR_F color);
 	void DrawLine(Fr2DBrush &fr2dbrush, float left, float top, float right, float bottom, float width);
-	void DrawRectangle(Fr2DBrush &fr2dbrush, float left, float top, float right, float bottom);
 	
+	void DrawRectangle(Fr2DBrush &fr2dbrush, float left, float top, float right, float bottom, float width);
+	void FillRectangle(Fr2DBrush &fr2dbrush, float left, float top, float right, float bottom);
+	
+	void DrawTriangle(Fr2DBrush &fr2dbrush, float x1, float y1, float x2, float y2, float x3, float y3, float width);
+	void DrawTriangle(Fr2DBrush &fr2dbrush, FrPoint p1, FrPoint p2, FrPoint p3, float width);
+
 	void DrawBitmap(Fr2DBitmap &fr2dbmp, float left, float top, float right, float bottom);
 	
 private:
@@ -170,6 +193,14 @@ private:
 
 Fr2D::Fr2D(HWND& _hwndptr) {
 	hwndptr = &_hwndptr;
+}
+
+ID2D1HwndRenderTarget* Fr2D::GetHandle() {
+	return hdl;
+}
+
+ID2D1Factory* Fr2D::GetFactory() {
+	return d2dFactory;
 }
 
 bool Fr2D::Create() {
@@ -251,12 +282,31 @@ void Fr2D::DrawLine(Fr2DBrush &fr2dbrush, float left, float top, float right, fl
 	hdl->DrawLine(D2D1::Point2F(left, top), D2D1::Point2F(right, bottom), fr2dbrush.GetBrush(), width);
 }
 
-void Fr2D::DrawRectangle(Fr2DBrush &fr2dbrush, float left, float top, float right, float bottom) {
-
+void Fr2D::DrawRectangle(Fr2DBrush &fr2dbrush, float left, float top, float right, float bottom, float width = 1.0) {
 	hdl->DrawRectangle(
+		D2D1::RectF(left, top, right, bottom),
+		fr2dbrush.GetBrush(),
+		width
+	);
+}
+
+void Fr2D::FillRectangle(Fr2DBrush &fr2dbrush, float left, float top, float right, float bottom) {
+	hdl->FillRectangle(
 		D2D1::RectF(left, top, right, bottom),
 		fr2dbrush.GetBrush()
 	);
+}
+
+void Fr2D::DrawTriangle(Fr2DBrush &fr2dbrush, float x1, float y1, float x2, float y2, float x3, float y3, float width = 1.0) {
+	hdl->DrawLine(D2D1::Point2F(x1, y1), D2D1::Point2F(x2, y2), fr2dbrush.GetBrush(), width);
+	hdl->DrawLine(D2D1::Point2F(x2, y2), D2D1::Point2F(x3, y3), fr2dbrush.GetBrush(), width);
+	hdl->DrawLine(D2D1::Point2F(x3, y3), D2D1::Point2F(x1, y1), fr2dbrush.GetBrush(), width);
+}
+
+void Fr2D::DrawTriangle(Fr2DBrush &fr2dbrush, FrPoint p1, FrPoint p2, FrPoint p3, float width) {
+	hdl->DrawLine(D2D1::Point2F(p1.x, p1.y), D2D1::Point2F(p2.x, p2.y), fr2dbrush.GetBrush(), width);
+	hdl->DrawLine(D2D1::Point2F(p2.x, p2.y), D2D1::Point2F(p3.x, p3.y), fr2dbrush.GetBrush(), width);
+	hdl->DrawLine(D2D1::Point2F(p3.x, p3.y), D2D1::Point2F(p1.x, p1.y), fr2dbrush.GetBrush(), width);
 }
 
 void Fr2D::DrawBitmap(Fr2DBitmap &fr2dbmp, float left, float top, float right, float bottom) {
