@@ -21,7 +21,7 @@ HWND hwnd;
 FrWnd *myWnd = new FrWnd(800, 600, "hello");
 Fr2D *myFr2D = new Fr2D(hwnd);
 Fr2DBrush myBrush, blueBrush;
-Fr2DBitmap mybmp(L"不就只能去死了吗.png");
+Fr2DBitmap mybmp(L"涓嶅氨鍙兘鍘绘浜嗗悧.png");
 
 
 bool FrWnd::Display() {
@@ -55,10 +55,6 @@ int WINAPI WinMain(WINPARAMETERS) {
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	switch (msg) {
-	case WM_LBUTTONDOWN:
-		MessageBox(0, _T("Hello, World"), _T("Hello"), MB_OK);
-		return 0;
-
 	case WM_KEYDOWN:
 		if (wParam == VK_ESCAPE)
 			DestroyWindow(hwnd);
