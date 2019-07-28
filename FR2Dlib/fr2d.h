@@ -242,6 +242,7 @@ public:
 	void DrawBitmap(Fr2DBitmap &fr2dbmp, float left, float top, float right, float bottom);
 	
 	void Write(FrText &frText, Fr2DBrush &fr2dBrush,std::string s);
+	void WriteW(FrText &frText, Fr2DBrush &fr2dBrush, LPCWSTR s);
 private:
 	HWND * hwndptr;
 	ID2D1Factory * d2dFactory;
@@ -378,6 +379,16 @@ void Fr2D::Write(FrText &frText, Fr2DBrush &fr2dBrush, std::string s) {
 	hdl->DrawText(
 		stringToLPCWSTR(s),
 		s.length(),
+		frText.GetFormat(),
+		frText.layoutRect,
+		fr2dBrush.GetBrush()
+	);
+}
+
+void Fr2D::WriteW(FrText &frText, Fr2DBrush &fr2dBrush, LPCWSTR s) {
+	hdl->DrawText(
+		s,
+		wcslen(s),
 		frText.GetFormat(),
 		frText.layoutRect,
 		fr2dBrush.GetBrush()

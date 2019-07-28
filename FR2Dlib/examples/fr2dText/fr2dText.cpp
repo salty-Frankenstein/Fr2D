@@ -20,8 +20,8 @@ void keyboard() {
 HWND hwnd;
 FrWnd *myWnd = new FrWnd(800, 600, "hello");
 Fr2D *myFr2D = new Fr2D(hwnd);
-Fr2DBrush myBrush;
-Fr2DBitmap mybmp(L"d:\\1.bmp");
+Fr2DBrush blackBrush, blueBrush;
+Fr2DBitmap mybmp(L"好天气.jpg");
 FrText myText;
 std::string textOut;
 
@@ -29,14 +29,16 @@ bool FrWnd::Display() {
 	keyboard();
 	myFr2D->BeginDraw();
 	myFr2D->Clear(_FR2DCOLOR(White));
-	myFr2D->DrawRectangle(myBrush, 50.f + x, 50.f + y, 100.f + x, 100.f + y);
-	myFr2D->DrawBitmap(mybmp, 50.f + x, 50.f + y, 100.f + x, 100.f + y);
-	textOut = "Position:\nx="
-		+ std::to_string(50 + x)
-		+ "\ny="
-		+ std::to_string(100 + y);
-	myFr2D->Write(myText, myBrush, textOut);
+	myFr2D->DrawRectangle(blackBrush, 50.f + x, 50.f + y, 150.f + x, 100.f + y);
+	myFr2D->DrawBitmap(mybmp, 50.f + x, 50.f + y, 150.f + x, 100.f + y);
+	myFr2D->WriteW(myText, blueBrush, L"今日もいい天気☆");
 
+	textOut = "\nPosition:\nx=" 
+		+ std::to_string(int(50+x))
+		+ "\ny="
+		+ std::to_string(int(50+y));
+	myFr2D->Write(myText, blackBrush, textOut);
+	
 	return myFr2D->EndDraw();
 }
 
@@ -45,22 +47,18 @@ int WINAPI WinMain(WINPARAMETERS) {
 	hwnd = myWnd->GetHandle();
 
 	myFr2D->Create();
-	myFr2D->CreateBrush(myBrush, _FR2DCOLOR(Black));
+	myFr2D->CreateBrush(blackBrush, _FR2DCOLOR(Black));
+	myFr2D->CreateBrush(blueBrush, _FR2DCOLOR(Blue));
 	mybmp.Create();
 	myFr2D->CreateBitmap(mybmp);
 	myText.Create();
-
-
+	
 	return myWnd->Run();
 }
 
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	switch (msg) {
-	case WM_LBUTTONDOWN:
-		MessageBox(0, _T("Hello, World"), _T("Hello"), MB_OK);
-		return 0;
-
 	case WM_KEYDOWN:
 		if (wParam == VK_ESCAPE)
 			DestroyWindow(hwnd);

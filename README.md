@@ -9,7 +9,7 @@ It may be turned into a 2D game engine later???⁄(⁄⁄•⁄ω⁄•⁄⁄)�
 
 # Requirements
 A Direct2D environment which includes the library "d2d1.lib" and "dwrite.lib".    
-Library windowscodecs.lib is also needed.  
+Library "windowscodecs.lib" is also needed.  
 (The heads related have already been included.)  
 
 # Already done:    
@@ -25,3 +25,4 @@ class Fr2DBrush: As the ID2D1SolidColorBrush, create for drawing.
 class Fr2DBitmap: As the WICBipmap and D2DBitmap, loading bmp pictures and drawing on the form.     
 struct FrPoint: the point structure with two float variables.    
 function stringToLPCWSTR: turn std::string into LPCWSTR
+class FrText: For text writing on the window, supports both std::string and LPCWSTR.
