@@ -24,5 +24,5 @@ class Fr2D: Serve as a factory class, encapsulation of the D2Dfactory and a rend
 class Fr2DBrush: As the ID2D1SolidColorBrush, create for drawing.     
 class Fr2DBitmap: As the WICBipmap and D2DBitmap, loading bmp pictures and drawing on the form.     
 struct FrPoint: the point structure with two float variables.    
-function stringToLPCWSTR: turn std::string into LPCWSTR
-class FrText: For text writing on the window, supports both std::string and LPCWSTR.
+function stringToLPCWSTR: turn std::string into LPCWSTR    
+class FrText: For text writing on the window, supports both std::string and LPCWSTR.    

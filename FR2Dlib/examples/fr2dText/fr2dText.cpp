@@ -1,7 +1,7 @@
 #include "fr_win.h"
 #include "fr2d.h"
 
-float x = 0, y = 0;
+float x = 100, y = 100;
 bool getkey[256] = { 0 };
 
 void keyboard() {
@@ -18,11 +18,11 @@ void keyboard() {
 }
 
 HWND hwnd;
-FrWnd *myWnd = new FrWnd(800, 600, "hello");
+FrWnd *myWnd = new FrWnd(800, 600, _T("好天气"));
 Fr2D *myFr2D = new Fr2D(hwnd);
 Fr2DBrush blackBrush, blueBrush;
 Fr2DBitmap mybmp(L"好天气.jpg");
-FrText myText;
+FrText myText, myTextW;
 std::string textOut;
 
 bool FrWnd::Display() {
@@ -31,9 +31,14 @@ bool FrWnd::Display() {
 	myFr2D->Clear(_FR2DCOLOR(White));
 	myFr2D->DrawRectangle(blackBrush, 50.f + x, 50.f + y, 150.f + x, 100.f + y);
 	myFr2D->DrawBitmap(mybmp, 50.f + x, 50.f + y, 150.f + x, 100.f + y);
-	myFr2D->WriteW(myText, blueBrush, L"今日もいい天気☆");
+	
+	myTextW.layoutRect.left = 10.f + x;
+	myTextW.layoutRect.top = 10.f + y;
+	myTextW.layoutRect.right = 300.f + x;
+	myTextW.layoutRect.bottom = 150.f + y;
+	myFr2D->WriteW(myTextW, blueBrush, L"今日もいい天気☆");
 
-	textOut = "\nPosition:\nx=" 
+	textOut = "Position:\nx=" 
 		+ std::to_string(int(50+x))
 		+ "\ny="
 		+ std::to_string(int(50+y));
@@ -51,7 +56,9 @@ int WINAPI WinMain(WINPARAMETERS) {
 	myFr2D->CreateBrush(blueBrush, _FR2DCOLOR(Blue));
 	mybmp.Create();
 	myFr2D->CreateBitmap(mybmp);
+
 	myText.Create();
+	myTextW.Create();
 	
 	return myWnd->Run();
 }
