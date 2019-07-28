@@ -22,6 +22,8 @@ FrWnd *myWnd = new FrWnd(800, 600, "hello");
 Fr2D *myFr2D = new Fr2D(hwnd);
 Fr2DBrush myBrush;
 Fr2DBitmap mybmp(L"d:\\1.bmp");
+FrText myText;
+std::string textOut;
 
 bool FrWnd::Display() {
 	keyboard();
@@ -29,17 +31,25 @@ bool FrWnd::Display() {
 	myFr2D->Clear(_FR2DCOLOR(White));
 	myFr2D->DrawRectangle(myBrush, 50.f + x, 50.f + y, 100.f + x, 100.f + y);
 	myFr2D->DrawBitmap(mybmp, 50.f + x, 50.f + y, 100.f + x, 100.f + y);
+	textOut = "Position:\nx="
+		+ std::to_string(50 + x)
+		+ "\ny="
+		+ std::to_string(100 + y);
+	myFr2D->Write(myText, myBrush, textOut);
+
 	return myFr2D->EndDraw();
 }
 
 int WINAPI WinMain(WINPARAMETERS) {
 	if (!myWnd->Create(INITPARAMETERS))return 0;
 	hwnd = myWnd->GetHandle();
-	
+
 	myFr2D->Create();
 	myFr2D->CreateBrush(myBrush, _FR2DCOLOR(Black));
 	mybmp.Create();
 	myFr2D->CreateBitmap(mybmp);
+	myText.Create();
+
 
 	return myWnd->Run();
 }

@@ -7,6 +7,8 @@
 #include<tchar.h>
 #include<windows.h>
 #include<wincodec.h>
+#include<string>
+#include<Dwrite.h>
 
 typedef D2D1_COLOR_F FR2DCOLOR;
 #define _FR2DCOLOR(COLOR) ( D2D1::ColorF(D2D1::ColorF:: COLOR ) )
@@ -26,6 +28,61 @@ FrPoint::FrPoint(float _x, float _y) {
 }
 
 //////////
+
+LPCWSTR stringToLPCWSTR(std::string orig);
+
+LPCWSTR stringToLPCWSTR(std::string orig)
+{
+	size_t origsize = orig.length() + 1;
+	const size_t newsize = 100;
+	size_t convertedChars = 0;
+	wchar_t *wcstring = (wchar_t *)malloc(sizeof(wchar_t)*(orig.length() - 1));
+	mbstowcs_s(&convertedChars, wcstring, origsize, orig.c_str(), _TRUNCATE);
+
+	return wcstring;
+}
+
+/*
+class FrText
+*/
+
+
+class FrText {
+public:
+	bool Create(float left, float top, float right, float bottom);
+	IDWriteTextFormat* GetFormat();
+	D2D1_RECT_F layoutRect;
+
+private:
+	IDWriteFactory * pDWriteFactory;
+	IDWriteTextFormat* pTextFormat;
+
+};
+
+bool FrText::Create(float left=0.f, float top=0.f, float right=200.f, float bottom=200.f) {
+	DWriteCreateFactory(
+		DWRITE_FACTORY_TYPE_SHARED,
+		__uuidof(IDWriteFactory),
+		reinterpret_cast<IUnknown**>(&pDWriteFactory));
+
+	HRESULT hr = pDWriteFactory->CreateTextFormat(
+		L"Arial",
+		NULL,
+		DWRITE_FONT_WEIGHT_NORMAL,
+		DWRITE_FONT_STYLE_NORMAL,
+		DWRITE_FONT_STRETCH_NORMAL,
+		20.0f * 96.0f / 72.0f,
+		L"en-US",
+		&pTextFormat
+	);
+
+	layoutRect = D2D1::RectF(left, top, right, bottom);
+	return true;
+}
+
+IDWriteTextFormat* FrText::GetFormat() {
+	return pTextFormat;
+}
 
 /*
 class Fr2DBitmap
@@ -184,6 +241,7 @@ public:
 
 	void DrawBitmap(Fr2DBitmap &fr2dbmp, float left, float top, float right, float bottom);
 	
+	void Write(FrText &frText, Fr2DBrush &fr2dBrush,std::string s);
 private:
 	HWND * hwndptr;
 	ID2D1Factory * d2dFactory;
@@ -316,6 +374,15 @@ void Fr2D::DrawBitmap(Fr2DBitmap &fr2dbmp, float left, float top, float right, f
 	);
 }
 
+void Fr2D::Write(FrText &frText, Fr2DBrush &fr2dBrush, std::string s) {
+	hdl->DrawText(
+		stringToLPCWSTR(s),
+		s.length(),
+		frText.GetFormat(),
+		frText.layoutRect,
+		fr2dBrush.GetBrush()
+	);
+}
 
 ///////////
 
