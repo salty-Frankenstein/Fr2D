@@ -5,7 +5,8 @@ Frankenstein's 2D graphics library based on DirectX, for learning C++ and Comput
 Includes part of 3D graphics libraries as well.   
 It may be turned into a 2D game engine later???⁄(⁄⁄•⁄ω⁄•⁄⁄)⁄    
 
-![miku.png](https://raw.githubusercontent.com/salty-Frankenstein/Fr2D/master/FR2Dlib/examples/miku.png)
+![miku.png](https://raw.githubusercontent.com/salty-Frankenstein/Fr2D/master/FR2Dlib/examples/miku.png)    
+![好天气.png](https://raw.githubusercontent.com/salty-Frankenstein/Fr2D/master/FR2Dlib/examples/好天气.png)    
 
 # Requirements
 A Direct2D environment which includes the library "d2d1.lib" and "dwrite.lib".    
