@@ -51,6 +51,8 @@ class FrText {
 public:
 	bool Create(float left, float top, float right, float bottom);
 	IDWriteTextFormat* GetFormat();
+	void SetRect(float left, float top, float right, float bottom);
+
 	D2D1_RECT_F layoutRect;
 
 private:
@@ -82,6 +84,13 @@ bool FrText::Create(float left=0.f, float top=0.f, float right=200.f, float bott
 
 IDWriteTextFormat* FrText::GetFormat() {
 	return pTextFormat;
+}
+
+void FrText::SetRect(float left, float top, float right, float bottom) {
+	layoutRect.left = left;
+	layoutRect.top = top;
+	layoutRect.right = right;
+	layoutRect.bottom = bottom;
 }
 
 /*

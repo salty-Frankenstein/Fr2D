@@ -31,19 +31,17 @@ bool FrWnd::Display() {
 	myFr2D->Clear(_FR2DCOLOR(White));
 	myFr2D->DrawRectangle(blackBrush, 50.f + x, 50.f + y, 150.f + x, 100.f + y);
 	myFr2D->DrawBitmap(mybmp, 50.f + x, 50.f + y, 150.f + x, 100.f + y);
-	
-	myTextW.layoutRect.left = 10.f + x;
-	myTextW.layoutRect.top = 10.f + y;
-	myTextW.layoutRect.right = 300.f + x;
-	myTextW.layoutRect.bottom = 150.f + y;
+
+	myTextW.SetRect(10.f + x, 10.f + y, 300.f + x, 150.f + y);
+
 	myFr2D->WriteW(myTextW, blueBrush, L"今日もいい天気☆");
 
-	textOut = "Position:\nx=" 
-		+ std::to_string(int(50+x))
+	textOut = "Position:\nx="
+		+ std::to_string(int(50 + x))
 		+ "\ny="
-		+ std::to_string(int(50+y));
+		+ std::to_string(int(50 + y));
 	myFr2D->Write(myText, blackBrush, textOut);
-	
+
 	return myFr2D->EndDraw();
 }
 
@@ -59,7 +57,7 @@ int WINAPI WinMain(WINPARAMETERS) {
 
 	myText.Create();
 	myTextW.Create();
-	
+
 	return myWnd->Run();
 }
 
