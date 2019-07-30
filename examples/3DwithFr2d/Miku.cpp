@@ -3,8 +3,9 @@
 #include "fr2d3d.h"
 #include <cstdio>
 
+bool Display();
 HWND hwnd;
-FrWnd *myWnd = new FrWnd(800, 600, "MIKU");
+FrWnd *myWnd = new FrWnd(800, 600, Display, "MIKU");
 Fr2D *myFr2D = new Fr2D(hwnd);
 Fr2DBrush greenBrush;
 Fr2D_3D* myFr3D = new Fr2D_3D(myFr2D, 0, 0, 0, 1500);
@@ -83,7 +84,7 @@ void keyboard() {
 	}
 }
 
-bool FrWnd::Display() {
+bool Display() {
 	keyboard();
 	myFr2D->BeginDraw();
 	myFr2D->Clear(_FR2DCOLOR(Pink));

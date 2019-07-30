@@ -17,21 +17,22 @@ void keyboard() {
 
 }
 
+bool Display();
 HWND hwnd;
-FrWnd *myWnd = new FrWnd(800, 600, "hello");
+FrWnd *myWnd = new FrWnd(800, 600, Display, "hello");
 Fr2D *myFr2D = new Fr2D(hwnd);
 Fr2DBrush myBrush, blueBrush;
 Fr2DBitmap mybmp(L"不就只能去死了吗.png");
 
 
-bool FrWnd::Display() {
+bool Display() {
 	keyboard();
 	myFr2D->BeginDraw();
 
 	myFr2D->Clear(_FR2DCOLOR(Pink));
 	myFr2D->DrawRectangle(myBrush, 0.f + x, 50.f + y, 100.f + x, 100.f + y, 5);
 	myFr2D->FillRectangle(blueBrush, 0.f + x, 50.f + y, 100.f + x, 100.f + y);
-	myFr2D->DrawTriangle(blueBrush, FrPoint(50, 50), FrPoint(100 + y, 100 + x), FrPoint(x, y) , 2);
+	myFr2D->DrawTriangle(blueBrush, FrPoint(50, 50), FrPoint(100 + y, 100 + x), FrPoint(x, y), 2);
 
 	myFr2D->DrawBitmap(mybmp, 50.f + x, 50.f + y, 100.f + x, 100.f + y);
 	myFr2D->DrawLine(myBrush, 50.f, 50.f, 100.f + x, 100.f + y, 0.5);
@@ -42,7 +43,7 @@ bool FrWnd::Display() {
 int WINAPI WinMain(WINPARAMETERS) {
 	if (!myWnd->Create(INITPARAMETERS))return 0;
 	hwnd = myWnd->GetHandle();
-	
+
 	myFr2D->Create();
 	myFr2D->CreateBrush(myBrush, _FR2DCOLOR(Black));
 	myFr2D->CreateBrush(blueBrush, _FR2DCOLOR(Blue));

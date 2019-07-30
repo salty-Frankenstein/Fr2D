@@ -15,13 +15,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 class FrWnd{
 public:
 	FrWnd();
-	FrWnd(int _height, int _width, LPCSTR _name);
+	FrWnd(int _height, int _width, bool (*callback)(), LPCSTR _name);
 	~FrWnd() {}
 
 	HWND GetHandle();
 	bool Create(HINSTANCE instanceHandle, int show);
 	int Run();
-	bool Display();
+	//bool Display();
+	bool(*Display)();
 private:
 	HWND hwnd;
 	LPCSTR name;
@@ -35,9 +36,10 @@ FrWnd::FrWnd() {
 	name = _T("Test");
 }
 
-FrWnd::FrWnd(int _height, int _width,LPCSTR _name = _T("Test")) {
+FrWnd::FrWnd(int _height, int _width, bool(*callback)(), LPCSTR _name = _T("Test")) {
 	height = _height;
 	width = _width;
+	Display = callback;
 	name = _name;
 }
 

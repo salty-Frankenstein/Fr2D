@@ -17,15 +17,16 @@ void keyboard() {
 
 }
 
+bool Display();
 HWND hwnd;
-FrWnd *myWnd = new FrWnd(800, 600, _T("好天气"));
+FrWnd *myWnd = new FrWnd(800, 600, Display, _T("好天气"));
 Fr2D *myFr2D = new Fr2D(hwnd);
 Fr2DBrush blackBrush, blueBrush;
 Fr2DBitmap mybmp(L"好天气.jpg");
 FrText myText, myTextW;
 std::string textOut;
 
-bool FrWnd::Display() {
+bool Display() {
 	keyboard();
 	myFr2D->BeginDraw();
 	myFr2D->Clear(_FR2DCOLOR(White));
@@ -60,7 +61,6 @@ int WINAPI WinMain(WINPARAMETERS) {
 
 	return myWnd->Run();
 }
-
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	switch (msg) {
