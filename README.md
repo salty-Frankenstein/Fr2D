@@ -14,9 +14,8 @@ Library "windowscodecs.lib" is also needed.
 (The heads related have already been included.)  
 
 # Already done:    
-## fr_win.h    
+## frwnd.h    
 The encapsulation of WindowsAPI, used for simply creating a window for rendering.    
-**caution: a Display function and a WndProc definition is needed, these will be changed into callback functions later.**     
 - class FrWnd: The encapsulation of WindowsAPI.     
 
 ## fr2d.h:    
