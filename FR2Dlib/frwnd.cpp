@@ -1,4 +1,4 @@
-#include "frwnd.h"
+ï»¿#include "frwnd.h"
 
 FrWnd::FrWnd() {
 	height = 800;
@@ -66,7 +66,7 @@ int FrWnd::Run() {
 			DispatchMessage(&msg);
 		}
 		else {
-			Display();	//´Ë´¦Îª»Øµ÷º¯Êý
+			Display();	//æ­¤å¤„ä¸ºå›žè°ƒå‡½æ•°
 		}
 	}
 	return (int)msg.wParam;
