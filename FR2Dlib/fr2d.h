@@ -11,6 +11,7 @@
 
 typedef D2D1_COLOR_F FR2DCOLOR;
 typedef D2D1_SIZE_F FRSIZE;
+typedef D2D1_RECT_U FRRECT;
 typedef unsigned char PIXEL255;
 
 /* pixel structure */
@@ -73,7 +74,7 @@ public:
 	IWICFormatConverter* GetConverter();
 	FRSIZE GetSize();
 
-	//bool CopyFromMemory(); // TODO:
+	bool CopyFromMemory(FRRECT r, void* buf);
 	bool SetPixel(FrCoord coord, FrPixel pixel);
 
 protected:

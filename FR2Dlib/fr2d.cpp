@@ -140,6 +140,12 @@ FRSIZE FrBitmap::GetSize() {
 	return pBitmap->GetSize();
 }
 
+bool FrBitmap::CopyFromMemory(FRRECT r, void* buf) {
+	assert(pBitmap->GetPixelFormat().format == DXGI_FORMAT_B8G8R8A8_UNORM);
+	auto res = pBitmap->CopyFromMemory(&r, buf, 4 * (r.right - r.left));
+	return res == S_OK;
+}
+
 bool FrBitmap::SetPixel(FrCoord coord, FrPixel pixel) {
 	D2D1_RECT_U r = { coord.x, coord.y, coord.x + 1, coord.y + 1 };
 	auto res = pBitmap->CopyFromMemory(&r, &pixel, 4);
