@@ -16,9 +16,9 @@ typedef unsigned char PIXEL255;
 
 /* pixel structure */
 struct FrPixel {
-	PIXEL255 r;
-	PIXEL255 g;
 	PIXEL255 b;
+	PIXEL255 g;
+	PIXEL255 r;
 	PIXEL255 a;
 };
 
