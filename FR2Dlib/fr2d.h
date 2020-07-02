@@ -124,12 +124,15 @@ public:
 	void BeginDraw();
 	bool EndDraw();
 	void Clear(FR2DCOLOR color);
-	void DrawLine(Fr2DBrush &fr2dbrush, float left, float top, float right, float bottom, float width);
+	void DrawLine(Fr2DBrush &fr2dbrush, float left, float top, float right, float bottom, float width = 1.0);
 
-	void DrawRectangle(Fr2DBrush &fr2dbrush, float left, float top, float right, float bottom, float width);
+	void DrawRectangle(Fr2DBrush &fr2dbrush, float left, float top, float right, float bottom, float width = 1.0);
 	void FillRectangle(Fr2DBrush &fr2dbrush, float left, float top, float right, float bottom);
 
-	void DrawTriangle(Fr2DBrush &fr2dbrush, float x1, float y1, float x2, float y2, float x3, float y3, float width);
+	void DrawEllipse(Fr2DBrush &fr2dbrush, float left, float top, float right, float bottom, float width = 1.0);
+	void FillEllipse(Fr2DBrush &fr2dbrush, float left, float top, float right, float bottom);
+
+	void DrawTriangle(Fr2DBrush &fr2dbrush, float x1, float y1, float x2, float y2, float x3, float y3, float width = 1.0);
 	void DrawTriangle(Fr2DBrush &fr2dbrush, FrPoint p1, FrPoint p2, FrPoint p3, float width);
 
 	void DrawBitmap(FrBitmap &bmp, float left, float top, float right, float bottom);

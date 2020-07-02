@@ -251,11 +251,11 @@ void Fr2D::Clear(FR2DCOLOR color) {	// Clear background color to a color
 }
 
 
-void Fr2D::DrawLine(Fr2DBrush &fr2dbrush, float left, float top, float right, float bottom, float width = 1.0) {
+void Fr2D::DrawLine(Fr2DBrush &fr2dbrush, float left, float top, float right, float bottom, float width) {
 	hdl->DrawLine(D2D1::Point2F(left, top), D2D1::Point2F(right, bottom), fr2dbrush.GetBrush(), width);
 }
 
-void Fr2D::DrawRectangle(Fr2DBrush &fr2dbrush, float left, float top, float right, float bottom, float width = 1.0) {
+void Fr2D::DrawRectangle(Fr2DBrush &fr2dbrush, float left, float top, float right, float bottom, float width) {
 	hdl->DrawRectangle(
 		D2D1::RectF(left, top, right, bottom),
 		fr2dbrush.GetBrush(),
@@ -270,7 +270,22 @@ void Fr2D::FillRectangle(Fr2DBrush &fr2dbrush, float left, float top, float righ
 	);
 }
 
-void Fr2D::DrawTriangle(Fr2DBrush &fr2dbrush, float x1, float y1, float x2, float y2, float x3, float y3, float width = 1.0) {
+void Fr2D::DrawEllipse(Fr2DBrush &fr2dbrush, float left, float top, float right, float bottom, float width) {
+	hdl->DrawEllipse(
+		D2D1::Ellipse({ (left + right) / 2,(top + bottom) / 2 }, (right - left) / 2, (bottom - top) / 2),
+		fr2dbrush.GetBrush(),
+		width
+	);
+}
+
+void Fr2D::FillEllipse(Fr2DBrush &fr2dbrush, float left, float top, float right, float bottom) {
+	hdl->FillEllipse(
+		D2D1::Ellipse({ (left + right) / 2,(top + bottom) / 2 }, (right - left) / 2, (bottom - top) / 2),
+		fr2dbrush.GetBrush()
+	);
+}
+
+void Fr2D::DrawTriangle(Fr2DBrush &fr2dbrush, float x1, float y1, float x2, float y2, float x3, float y3, float width) {
 	hdl->DrawLine(D2D1::Point2F(x1, y1), D2D1::Point2F(x2, y2), fr2dbrush.GetBrush(), width);
 	hdl->DrawLine(D2D1::Point2F(x2, y2), D2D1::Point2F(x3, y3), fr2dbrush.GetBrush(), width);
 	hdl->DrawLine(D2D1::Point2F(x3, y3), D2D1::Point2F(x1, y1), fr2dbrush.GetBrush(), width);
