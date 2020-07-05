@@ -44,7 +44,7 @@ class FrText
 
 class FrText {
 public:
-	bool Create(float left = 0.f, float top = 0.f, float right = 200.f, float bottom = 200.f);
+	bool Create(float left = 0.f, float top = 0.f, float right = 200.f, float bottom = 200.f, float size = 20);
 	IDWriteTextFormat* GetFormat();
 	void SetRect(float left, float top, float right, float bottom);
 

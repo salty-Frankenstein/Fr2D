@@ -8,7 +8,7 @@ FrPoint::FrPoint(float _x, float _y) {
 }
 
 /* class FrText */
-bool FrText::Create(float left, float top, float right, float bottom) {
+bool FrText::Create(float left, float top, float right, float bottom, float size) {
 	DWriteCreateFactory(
 		DWRITE_FACTORY_TYPE_SHARED,
 		__uuidof(IDWriteFactory),
@@ -20,7 +20,7 @@ bool FrText::Create(float left, float top, float right, float bottom) {
 		DWRITE_FONT_WEIGHT_NORMAL,
 		DWRITE_FONT_STYLE_NORMAL,
 		DWRITE_FONT_STRETCH_NORMAL,
-		20.0f * 96.0f / 72.0f,
+		size,
 		L"en-US",
 		&pTextFormat
 	);
